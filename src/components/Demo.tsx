@@ -15,27 +15,14 @@ const Demo = () => {
         </div>
 
         {/* Video Container */}
-        <div className="video-container mb-8">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl flex items-center justify-center">
-            {/* Placeholder for video - in real implementation, this would be replaced with actual video */}
-            <div className="text-center space-y-4">
-              <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto backdrop-blur-sm">
-                <div className="w-0 h-0 border-l-[12px] border-l-white border-y-[8px] border-y-transparent ml-1"></div>
-              </div>
-              <div className="text-white">
-                <h3 className="font-semibold text-lg mb-2">Demo Video</h3>
-                <p className="text-white/80 text-sm">Click to watch our 3-minute demo</p>
-              </div>
-            </div>
-          </div>
-          
-          {/* In a real app, you would use an actual video embed */}
+        <div className="relative aspect-video w-full max-w-4xl mx-auto mb-8 rounded-xl overflow-hidden shadow-2xl">
           <iframe
-            className="opacity-0"
-            src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+            className="w-full h-full"
+            src="https://www.youtube.com/embed/jefp7vkPnuE"
             title="RenderWeb Platform Demo"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowFullScreen
+            referrerPolicy="strict-origin-when-cross-origin"
           />
         </div>
 
