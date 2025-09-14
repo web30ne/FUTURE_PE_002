@@ -1,4 +1,4 @@
-# Welcome to your Lovable project
+# Welcome to my Future Intern Prompt Engineering Task
 
 ## Project info
 
@@ -67,7 +67,3 @@ Simply open [Lovable](https://lovable.dev/projects/012f042d-efc6-44fb-985b-5a16a
 ## Can I connect a custom domain to my Lovable project?
 
 Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
