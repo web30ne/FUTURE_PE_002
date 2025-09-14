@@ -2,41 +2,60 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* RenderWeb Design System - Professional SaaS Platform */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Brand Colors - Warm, trustworthy palette */
+    --background: 42 62% 98%; /* #fdfaf6 - warm cream */
+    --foreground: 215 25% 16%; /* #1a202c - deep slate */
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%; /* pure white */
+    --card-foreground: 215 25% 16%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 215 25% 16%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Primary - Professional teal */
+    --primary: 177 87% 31%; /* #0e918c */
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 177 87% 37%; /* #13b0a9 */
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Secondary - Warm brown */
+    --secondary: 37 18% 34%; /* #665d47 */
+    --secondary-foreground: 0 0% 100%;
+    --secondary-hover: 37 24% 45%; /* #8d7e5a */
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Accent backgrounds */
+    --accent-light: 42 42% 95%; /* #f8f4ec */
+    --accent-medium: 42 35% 90%; /* #f3ecd9 */
+    --accent-foreground: 215 25% 16%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --muted: 42 42% 95%;
+    --muted-foreground: 0 0% 36%; /* #5c5c5c */
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --border: 42 25% 88%;
+    --input: 42 42% 95%;
+    --ring: 177 87% 31%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --radius: 0.75rem;
 
-    --radius: 0.5rem;
+    /* Gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-hover)));
+    --gradient-card: linear-gradient(145deg, hsl(var(--card)), hsl(var(--accent-light)));
+    --gradient-section: linear-gradient(180deg, hsl(var(--background)), hsl(var(--accent-light)));
+
+    /* Shadows */
+    --shadow-soft: 0 2px 16px hsl(215 25% 16% / 0.04);
+    --shadow-medium: 0 6px 32px hsl(215 25% 16% / 0.08);
+    --shadow-strong: 0 12px 48px hsl(215 25% 16% / 0.15);
+
+    /* Transitions */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+    --radius: 0.75rem;
 
     --sidebar-background: 0 0% 98%;
 
@@ -101,5 +120,134 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-feature-settings: 'cv11', 'ss01';
+    font-variation-settings: 'opsz' 32;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+  }
+
+  .section-light {
+    @apply bg-gradient-to-b from-background to-accent-light;
+  }
+
+  .section-medium {
+    @apply bg-accent-medium;
+  }
+}
+
+@layer components {
+  /* Button Variants */
+  .btn-hero {
+    @apply bg-primary text-primary-foreground px-8 py-4 text-lg font-semibold rounded-xl;
+    @apply hover:bg-primary-hover transform hover:scale-105;
+    @apply shadow-lg hover:shadow-xl;
+    transition: var(--transition-bounce);
+    background: var(--gradient-hero);
+  }
+
+  .btn-secondary {
+    @apply bg-secondary text-secondary-foreground px-6 py-3 font-semibold rounded-lg;
+    @apply hover:bg-secondary-hover transform hover:scale-105;
+    @apply shadow-md hover:shadow-lg;
+    transition: var(--transition-smooth);
+  }
+
+  .btn-outline {
+    @apply border-2 border-primary text-primary px-6 py-3 font-semibold rounded-lg;
+    @apply hover:bg-primary hover:text-primary-foreground;
+    @apply transform hover:scale-105;
+    transition: var(--transition-smooth);
+  }
+
+  /* Card Styles */
+  .card-elevated {
+    @apply bg-card rounded-xl p-6;
+    box-shadow: var(--shadow-soft);
+    transition: var(--transition-smooth);
+  }
+
+  .card-elevated:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-medium);
+  }
+
+  .card-feature {
+    @apply bg-card rounded-xl p-8 text-center;
+    background: var(--gradient-card);
+    box-shadow: var(--shadow-soft);
+    transition: var(--transition-bounce);
+  }
+
+  .card-feature:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: var(--shadow-strong);
+  }
+
+  /* Stats */
+  .stat-number {
+    @apply text-4xl md:text-5xl font-bold text-primary;
+    background: var(--gradient-hero);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Form Styles */
+  .form-input {
+    @apply w-full px-4 py-3 rounded-lg border border-border;
+    @apply bg-input focus:bg-card focus:border-primary focus:ring-2 focus:ring-primary/20;
+    @apply transition-colors duration-200;
+  }
+
+  .form-label {
+    @apply block text-sm font-medium text-foreground mb-2;
+  }
+
+  /* Layout Utilities */
+  .container-wide {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .container-narrow {
+    @apply max-w-4xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .section-padding {
+    @apply py-16 sm:py-20 lg:py-24;
+  }
+
+  /* Animations */
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Video container */
+  .video-container {
+    @apply relative w-full rounded-xl overflow-hidden;
+    box-shadow: var(--shadow-medium);
+    aspect-ratio: 16 / 9;
+  }
+
+  .video-container iframe {
+    @apply absolute inset-0 w-full h-full;
   }
 }
