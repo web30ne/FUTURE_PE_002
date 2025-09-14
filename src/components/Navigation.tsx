@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
+import ContactModal from "@/components/ContactModal";
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -8,8 +9,7 @@ const Navigation = () => {
   const navItems = [
     { label: "Features", href: "#features" },
     { label: "Demo", href: "#demo" },
-    { label: "Pricing", href: "#pricing" },
-    { label: "Contact", href: "#contact" }
+    { label: "Pricing", href: "#pricing" }
   ];
 
   const scrollToSection = (href: string) => {
@@ -40,6 +40,11 @@ const Navigation = () => {
                 {item.label}
               </button>
             ))}
+            <ContactModal>
+              <button className="text-muted-foreground hover:text-foreground transition-colors">
+                Contact
+              </button>
+            </ContactModal>
           </div>
 
           {/* Desktop CTA */}
@@ -72,6 +77,11 @@ const Navigation = () => {
                   {item.label}
                 </button>
               ))}
+              <ContactModal>
+                <button className="text-left text-muted-foreground hover:text-foreground transition-colors py-2">
+                  Contact
+                </button>
+              </ContactModal>
               <Button className="btn-hero w-full mt-4" size="sm">
                 Start Free Trial
               </Button>

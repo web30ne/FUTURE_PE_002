@@ -1,4 +1,5 @@
 import { Twitter, Linkedin, Mail, MessageSquare } from "lucide-react";
+import ContactModal from "@/components/ContactModal";
 
 const Footer = () => {
   return (
@@ -103,9 +104,11 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="#contact" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Contact Us
-                </a>
+                <ContactModal>
+                  <button className="text-muted-foreground hover:text-foreground transition-colors">
+                    Contact Us
+                  </button>
+                </ContactModal>
               </li>
               <li>
                 <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
