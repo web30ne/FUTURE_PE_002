@@ -136,7 +136,7 @@
   }
 
   .section-medium {
-    @apply bg-accent-medium;
+    background: hsl(var(--accent-medium));
   }
 }
 
