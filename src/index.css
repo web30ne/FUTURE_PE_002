@@ -132,7 +132,7 @@
   }
 
   .section-light {
-    @apply bg-gradient-to-b from-background to-accent-light;
+    background: linear-gradient(180deg, hsl(var(--background)), hsl(var(--accent-light)));
   }
 
   .section-medium {
