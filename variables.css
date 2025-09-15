@@ -1,0 +1,5 @@
+:root {
+  --lovable-main-color: #e91e63;         /* Main accent color */
+  --lovable-question-size: 1.2rem;       /* FAQ question font size */
+  --lovable-answer-size: 1rem;           /* FAQ answer font size */
+}
