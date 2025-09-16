@@ -180,7 +180,10 @@ const Footer = () => {
                 window.addEventListener("load", onLoad);
               }
             }}
-            className="w-14 h-14 bg-primary hover:bg-primary-hover text-primary-foreground rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center group"
+            className="w-14 h-14 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center group"
+            style={{ backgroundColor: '#52debb' }}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#45c7a8'}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#52debb'}
           >
             <MessageSquare className="w-6 h-6 group-hover:scale-110 transition-transform" />
           </button>
