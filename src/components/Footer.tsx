@@ -1,4 +1,4 @@
-import { Twitter, Linkedin, Mail, MessageSquare } from "lucide-react";
+import { Twitter, Linkedin, Mail } from "lucide-react";
 import ContactModal from "@/components/ContactModal";
 
 const Footer = () => {
@@ -143,52 +143,7 @@ const Footer = () => {
           </nav>
         </div>
 
-        {/* Chatbot Indicator */}
-        <div className="fixed bottom-6 right-6 z-50">
-          <button 
-            onClick={() => {
-              // Load Chatbase script
-              const windowObj = window as any;
-              if (!windowObj.chatbase || windowObj.chatbase("getState") !== "initialized") {
-                windowObj.chatbase = (...args: any[]) => {
-                  if (!windowObj.chatbase.q) {
-                    windowObj.chatbase.q = [];
-                  }
-                  windowObj.chatbase.q.push(args);
-                };
-                windowObj.chatbase = new Proxy(windowObj.chatbase, {
-                  get(target: any, prop: any) {
-                    if (prop === "q") {
-                      return target.q;
-                    }
-                    return (...args: any[]) => target(prop, ...args);
-                  }
-                });
-              }
-              
-              const onLoad = function() {
-                const script = document.createElement("script") as any;
-                script.src = "https://www.chatbase.co/embed.min.js";
-                script.id = "Kn6ooU59pRUDEA7i85MPG";
-                script.setAttribute("data-domain", "www.chatbase.co");
-                document.body.appendChild(script);
-              };
-              
-              if (document.readyState === "complete") {
-                onLoad();
-              } else {
-                window.addEventListener("load", onLoad);
-              }
-            }}
-            className="w-14 h-14 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center group"
-            style={{ backgroundColor: '#52debb' }}
-            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#45c7a8'}
-            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#52debb'}
-          >
-            <MessageSquare className="w-6 h-6 group-hover:scale-110 transition-transform" />
-          </button>
         </div>
-      </div>
     </footer>
   );
 };
