@@ -145,7 +145,43 @@ const Footer = () => {
 
         {/* Chatbot Indicator */}
         <div className="fixed bottom-6 right-6 z-50">
-          <button className="w-14 h-14 bg-primary hover:bg-primary-hover text-primary-foreground rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center group">
+          <button 
+            onClick={() => {
+              // Load Chatbase script
+              const windowObj = window as any;
+              if (!windowObj.chatbase || windowObj.chatbase("getState") !== "initialized") {
+                windowObj.chatbase = (...args: any[]) => {
+                  if (!windowObj.chatbase.q) {
+                    windowObj.chatbase.q = [];
+                  }
+                  windowObj.chatbase.q.push(args);
+                };
+                windowObj.chatbase = new Proxy(windowObj.chatbase, {
+                  get(target: any, prop: any) {
+                    if (prop === "q") {
+                      return target.q;
+                    }
+                    return (...args: any[]) => target(prop, ...args);
+                  }
+                });
+              }
+              
+              const onLoad = function() {
+                const script = document.createElement("script") as any;
+                script.src = "https://www.chatbase.co/embed.min.js";
+                script.id = "Kn6ooU59pRUDEA7i85MPG";
+                script.setAttribute("data-domain", "www.chatbase.co");
+                document.body.appendChild(script);
+              };
+              
+              if (document.readyState === "complete") {
+                onLoad();
+              } else {
+                window.addEventListener("load", onLoad);
+              }
+            }}
+            className="w-14 h-14 bg-primary hover:bg-primary-hover text-primary-foreground rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center group"
+          >
             <MessageSquare className="w-6 h-6 group-hover:scale-110 transition-transform" />
           </button>
         </div>
