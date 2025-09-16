@@ -2,34 +2,101 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    company: ""
+    company: "",
+    phone: "",
+    subject: "",
+    message: ""
   });
+  const [webhookUrl, setWebhookUrl] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showWebhookConfig, setShowWebhookConfig] = useState(false);
   const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    try {
+      // Create email content
+      const emailSubject = formData.subject || `Contact Form: ${formData.name}`;
+      const emailBody = `
+Name: ${formData.name}
+Email: ${formData.email}
+Company: ${formData.company || 'Not provided'}
+Phone: ${formData.phone || 'Not provided'}
+Subject: ${formData.subject || 'Contact Form Submission'}
 
-    toast({
-      title: "Message sent!",
-      description: "We'll get back to you within 24 hours.",
-    });
+Message:
+${formData.message}
 
-    setFormData({ name: "", email: "", company: "" });
-    setIsSubmitting(false);
+---
+Submitted from: ${window.location.origin}
+Timestamp: ${new Date().toLocaleString()}
+      `.trim();
+
+      // Open mailto link
+      const mailtoUrl = `mailto:directmail.eno@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+      window.open(mailtoUrl, '_blank');
+
+      // Send to Zapier webhook if configured
+      if (webhookUrl) {
+        try {
+          await fetch(webhookUrl, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            mode: "no-cors",
+            body: JSON.stringify({
+              ...formData,
+              timestamp: new Date().toISOString(),
+              source: "website_contact_form",
+              url: window.location.href
+            }),
+          });
+          console.log("Zapier webhook triggered successfully");
+        } catch (webhookError) {
+          console.error("Zapier webhook error:", webhookError);
+        }
+      }
+
+      toast({
+        title: "Message sent!",
+        description: webhookUrl 
+          ? "Email opened and Zapier automation triggered. We'll get back to you within 24 hours."
+          : "Email client opened. We'll get back to you within 24 hours.",
+      });
+
+      // Reset form
+      setFormData({ 
+        name: "", 
+        email: "", 
+        company: "", 
+        phone: "", 
+        subject: "", 
+        message: "" 
+      });
+
+    } catch (error) {
+      console.error("Form submission error:", error);
+      toast({
+        title: "Error",
+        description: "There was an error sending your message. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData(prev => ({
       ...prev,
       [e.target.name]: e.target.value
@@ -53,57 +120,139 @@ const Contact = () => {
           {/* Contact Form */}
           <div className="card-elevated">
             <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="name" className="form-label">
+                    Name *
+                  </Label>
+                  <Input
+                    id="name"
+                    name="name"
+                    type="text"
+                    required
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    className="form-input"
+                    placeholder="Your full name"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="email" className="form-label">
+                    Email *
+                  </Label>
+                  <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    required
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    className="form-input"
+                    placeholder="you@company.com"
+                  />
+                </div>
+              </div>
+
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="company" className="form-label">
+                    Company
+                  </Label>
+                  <Input
+                    id="company"
+                    name="company"
+                    type="text"
+                    value={formData.company}
+                    onChange={handleInputChange}
+                    className="form-input"
+                    placeholder="Your company name"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="phone" className="form-label">
+                    Phone
+                  </Label>
+                  <Input
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    className="form-input"
+                    placeholder="+1 (555) 123-4567"
+                  />
+                </div>
+              </div>
+
               <div>
-                <Label htmlFor="name" className="form-label">
-                  Name *
+                <Label htmlFor="subject" className="form-label">
+                  Subject *
                 </Label>
                 <Input
-                  id="name"
-                  name="name"
+                  id="subject"
+                  name="subject"
                   type="text"
                   required
-                  value={formData.name}
+                  value={formData.subject}
                   onChange={handleInputChange}
                   className="form-input"
-                  placeholder="Your full name"
+                  placeholder="What can we help you with?"
                 />
               </div>
 
               <div>
-                <Label htmlFor="email" className="form-label">
-                  Email *
+                <Label htmlFor="message" className="form-label">
+                  Message *
                 </Label>
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
+                <Textarea
+                  id="message"
+                  name="message"
                   required
-                  value={formData.email}
+                  value={formData.message}
                   onChange={handleInputChange}
-                  className="form-input"
-                  placeholder="you@company.com"
+                  className="form-input min-h-[120px] resize-y"
+                  placeholder="Tell us about your project, requirements, or questions..."
                 />
               </div>
 
-              <div>
-                <Label htmlFor="company" className="form-label">
-                  Company
-                </Label>
-                <Input
-                  id="company"
-                  name="company"
-                  type="text"
-                  value={formData.company}
-                  onChange={handleInputChange}
-                  className="form-input"
-                  placeholder="Your company name"
-                />
+              {/* Zapier Configuration */}
+              <div className="border-t pt-4">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setShowWebhookConfig(!showWebhookConfig)}
+                  className="text-sm text-muted-foreground mb-3"
+                >
+                  {showWebhookConfig ? "Hide" : "Show"} Zapier Integration
+                </Button>
+                
+                {showWebhookConfig && (
+                  <div>
+                    <Label htmlFor="webhook" className="form-label text-sm">
+                      Zapier Webhook URL (Optional)
+                    </Label>
+                    <Input
+                      id="webhook"
+                      type="url"
+                      value={webhookUrl}
+                      onChange={(e) => setWebhookUrl(e.target.value)}
+                      className="form-input"
+                      placeholder="https://hooks.zapier.com/hooks/catch/..."
+                    />
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Connect your Zapier automation to receive form submissions
+                    </p>
+                  </div>
+                )}
               </div>
 
               <Button 
                 type="submit"
                 className="btn-hero w-full"
-                disabled={isSubmitting}
+                disabled={isSubmitting || !formData.name || !formData.email || !formData.subject || !formData.message}
               >
                 {isSubmitting ? "Sending..." : "Send Message"}
               </Button>
