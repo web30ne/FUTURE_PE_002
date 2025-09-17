@@ -55,12 +55,12 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+                <a href="/api-docs" className="text-muted-foreground hover:text-foreground transition-colors">
                   API Docs
                 </a>
               </li>
               <li>
-                <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+                <a href="/integrations" className="text-muted-foreground hover:text-foreground transition-colors">
                   Integrations
                 </a>
               </li>
@@ -72,22 +72,22 @@ const Footer = () => {
             <h4 className="font-semibold mb-4">Company</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+                <a href="/about" className="text-muted-foreground hover:text-foreground transition-colors">
                   About Us
                 </a>
               </li>
               <li>
-                <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+                <a href="/careers" className="text-muted-foreground hover:text-foreground transition-colors">
                   Careers
                 </a>
               </li>
               <li>
-                <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+                <a href="/blog" className="text-muted-foreground hover:text-foreground transition-colors">
                   Blog
                 </a>
               </li>
               <li>
-                <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+                <a href="/press" className="text-muted-foreground hover:text-foreground transition-colors">
                   Press Kit
                 </a>
               </li>
@@ -99,7 +99,7 @@ const Footer = () => {
             <h4 className="font-semibold mb-4">Support</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+                <a href="/help" className="text-muted-foreground hover:text-foreground transition-colors">
                   Help Center
                 </a>
               </li>
@@ -111,12 +111,12 @@ const Footer = () => {
                 </ContactModal>
               </li>
               <li>
-                <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+                <a href="/status" className="text-muted-foreground hover:text-foreground transition-colors">
                   Status Page
                 </a>
               </li>
               <li>
-                <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+                <a href="/community" className="text-muted-foreground hover:text-foreground transition-colors">
                   Community
                 </a>
               </li>
