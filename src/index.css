@@ -55,6 +55,15 @@
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
+    /* Lovable Links Integration */
+    --lovable-link-color: hsl(var(--primary));
+    --lovable-link-hover: hsl(var(--primary-hover));
+    --lovable-link-underline: hsl(var(--primary));
+    --lovable-preview-bg: hsl(var(--card));
+    --lovable-preview-text: hsl(var(--card-foreground));
+    --lovable-preview-border: hsl(var(--border));
+    --lovable-preview-shadow: var(--shadow-strong);
+
     --radius: 0.75rem;
 
     --sidebar-background: 0 0% 98%;

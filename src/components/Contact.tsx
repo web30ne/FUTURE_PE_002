@@ -19,12 +19,26 @@ const Contact = () => {
   const [showWebhookConfig, setShowWebhookConfig] = useState(false);
   const { toast } = useToast();
 
+  // Helper function to get UTM parameters
+  const getUtmParams = () => {
+    const params = new URLSearchParams(window.location.search);
+    return {
+      utm_source: params.get('utm_source') || '',
+      utm_medium: params.get('utm_medium') || '',
+      utm_campaign: params.get('utm_campaign') || '',
+      utm_term: params.get('utm_term') || '',
+      utm_content: params.get('utm_content') || ''
+    };
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     try {
-      // Create email content
+      const utmParams = getUtmParams();
+      
+      // Create enhanced email content
       const emailSubject = formData.subject || `Contact Form: ${formData.name}`;
       const emailBody = `
 Name: ${formData.name}
@@ -36,32 +50,54 @@ Subject: ${formData.subject || 'Contact Form Submission'}
 Message:
 ${formData.message}
 
+UTM Parameters:
+- Source: ${utmParams.utm_source || 'Direct'}
+- Medium: ${utmParams.utm_medium || 'Direct'}
+- Campaign: ${utmParams.utm_campaign || 'None'}
+- Term: ${utmParams.utm_term || 'None'}
+- Content: ${utmParams.utm_content || 'None'}
+
 ---
-Submitted from: ${window.location.origin}
+Submitted from: ${window.location.href}
+Page URL: ${window.location.pathname}
+Referrer: ${document.referrer || 'Direct'}
 Timestamp: ${new Date().toLocaleString()}
+User Agent: ${navigator.userAgent}
       `.trim();
 
       // Open mailto link
       const mailtoUrl = `mailto:directmail.eno@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
       window.open(mailtoUrl, '_blank');
 
-      // Send to Zapier webhook if configured
+      // Send enhanced data to Zapier webhook if configured
       if (webhookUrl) {
         try {
+          const payload = {
+            ...formData,
+            ...utmParams,
+            timestamp: new Date().toISOString(),
+            source: "website_contact_form",
+            page_url: window.location.href,
+            page_path: window.location.pathname,
+            referrer: document.referrer || 'direct',
+            user_agent: navigator.userAgent,
+            screen_resolution: `${window.screen.width}x${window.screen.height}`,
+            viewport_size: `${window.innerWidth}x${window.innerHeight}`,
+            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+            language: navigator.language,
+            lead_score: calculateLeadScore(formData),
+            form_version: "2.0"
+          };
+
           await fetch(webhookUrl, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
             mode: "no-cors",
-            body: JSON.stringify({
-              ...formData,
-              timestamp: new Date().toISOString(),
-              source: "website_contact_form",
-              url: window.location.href
-            }),
+            body: JSON.stringify(payload),
           });
-          console.log("Zapier webhook triggered successfully");
+          console.log("Enhanced Zapier webhook triggered successfully", payload);
         } catch (webhookError) {
           console.error("Zapier webhook error:", webhookError);
         }
@@ -94,6 +130,17 @@ Timestamp: ${new Date().toLocaleString()}
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  // Lead scoring function
+  const calculateLeadScore = (data: typeof formData) => {
+    let score = 0;
+    if (data.company) score += 20;
+    if (data.phone) score += 15;
+    if (data.message.length > 50) score += 10;
+    if (data.email.includes('@')) score += 5;
+    if (data.subject.toLowerCase().includes('trial') || data.subject.toLowerCase().includes('demo')) score += 25;
+    return Math.min(score, 100);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {

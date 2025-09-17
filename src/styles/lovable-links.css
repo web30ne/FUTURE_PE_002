@@ -1,0 +1,281 @@
+/* Lovable Links Styling */
+/* Uses CSS custom properties for easy theming */
+
+:root {
+  /* Default color scheme - can be overridden */
+  --lovable-link-color: hsl(177, 87%, 31%);
+  --lovable-link-hover: hsl(177, 87%, 37%);
+  --lovable-link-underline: hsl(177, 87%, 31%);
+  --lovable-preview-bg: hsl(0, 0%, 100%);
+  --lovable-preview-text: hsl(215, 25%, 16%);
+  --lovable-preview-border: hsl(42, 25%, 88%);
+  --lovable-preview-shadow: 0 12px 48px hsla(215, 25%, 16%, 0.15);
+  --lovable-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Link Styling */
+.lovable-link {
+  color: var(--lovable-link-color);
+  text-decoration: none;
+  position: relative;
+  border-bottom: 1px solid var(--lovable-link-underline);
+  border-bottom-color: transparent;
+  transition: var(--lovable-transition);
+  cursor: pointer;
+}
+
+.lovable-link:hover,
+.lovable-link:focus {
+  color: var(--lovable-link-hover);
+  border-bottom-color: var(--lovable-link-underline);
+}
+
+.lovable-link::after {
+  content: '';
+  position: absolute;
+  right: -12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  border: 1.5px solid currentColor;
+  border-left: none;
+  border-bottom: none;
+  transform: translateY(-50%) rotate(45deg);
+  opacity: 0;
+  transition: var(--lovable-transition);
+}
+
+.lovable-link:hover::after,
+.lovable-link:focus::after {
+  opacity: 0.7;
+  transform: translateY(-50%) rotate(45deg) translateX(2px);
+}
+
+/* Desktop Preview Card */
+.lovable-preview-card {
+  position: fixed;
+  width: 320px;
+  max-width: 90vw;
+  background: var(--lovable-preview-bg);
+  border: 1px solid var(--lovable-preview-border);
+  border-radius: 12px;
+  box-shadow: var(--lovable-preview-shadow);
+  z-index: 1000;
+  overflow: hidden;
+  animation: lovable-fadeIn 0.2s ease-out;
+}
+
+@keyframes lovable-fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.lovable-preview-image {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  display: block;
+}
+
+.lovable-preview-content {
+  padding: 16px;
+}
+
+.lovable-preview-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--lovable-preview-text);
+  margin: 0 0 8px 0;
+  line-height: 1.4;
+}
+
+.lovable-preview-text {
+  font-size: 14px;
+  color: var(--lovable-preview-text);
+  opacity: 0.8;
+  margin: 0;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Mobile Preview Modal */
+.lovable-mobile-preview {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 2000;
+  display: flex;
+  align-items: flex-end;
+  animation: lovable-mobileSlideIn 0.3s ease-out;
+}
+
+@keyframes lovable-mobileSlideIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.lovable-mobile-preview-content {
+  background: var(--lovable-preview-bg);
+  width: 100%;
+  max-height: 80vh;
+  border-radius: 16px 16px 0 0;
+  overflow: hidden;
+  position: relative;
+  animation: lovable-mobileContentSlide 0.3s ease-out;
+}
+
+@keyframes lovable-mobileContentSlide {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.lovable-mobile-preview-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.1);
+  border: none;
+  font-size: 20px;
+  color: var(--lovable-preview-text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: var(--lovable-transition);
+}
+
+.lovable-mobile-preview-close:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.lovable-mobile-preview-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+}
+
+.lovable-mobile-preview-text {
+  padding: 24px;
+}
+
+.lovable-mobile-preview-text h4 {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--lovable-preview-text);
+  margin: 0 0 12px 0;
+  line-height: 1.3;
+}
+
+.lovable-mobile-preview-text p {
+  font-size: 16px;
+  color: var(--lovable-preview-text);
+  opacity: 0.8;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.lovable-mobile-preview-actions {
+  padding: 0 24px 24px 24px;
+}
+
+.lovable-mobile-preview-go {
+  width: 100%;
+  padding: 16px;
+  background: var(--lovable-link-color);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--lovable-transition);
+}
+
+.lovable-mobile-preview-go:hover {
+  background: var(--lovable-link-hover);
+  transform: translateY(-1px);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .lovable-preview-card {
+    display: none; /* Use mobile modal instead */
+  }
+  
+  .lovable-link::after {
+    display: none; /* Simplify mobile links */
+  }
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  .lovable-link {
+    border-bottom-width: 2px;
+  }
+  
+  .lovable-preview-card {
+    border-width: 2px;
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .lovable-link,
+  .lovable-link::after,
+  .lovable-preview-card,
+  .lovable-mobile-preview,
+  .lovable-mobile-preview-content,
+  .lovable-mobile-preview-go {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --lovable-preview-bg: hsl(222, 84%, 5%);
+    --lovable-preview-text: hsl(210, 40%, 95%);
+    --lovable-preview-border: hsl(217, 33%, 18%);
+  }
+}
+
+/* Focus Styles for Accessibility */
+.lovable-link:focus {
+  outline: 2px solid var(--lovable-link-color);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.lovable-mobile-preview-close:focus,
+.lovable-mobile-preview-go:focus {
+  outline: 2px solid var(--lovable-link-color);
+  outline-offset: 2px;
+}
